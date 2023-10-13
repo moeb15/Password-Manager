@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// Hashes password string using SHA256
 func HashPwd(pwd string) string {
 	h := sha256.New()
 	h.Write([]byte(pwd))
@@ -13,6 +14,7 @@ func HashPwd(pwd string) string {
 	return hashed_pwd
 }
 
+// Compares SHA256 hashes
 func CompareHashes(pwd string, hash string) bool {
 	return HashPwd(pwd) == hash
 }
