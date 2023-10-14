@@ -8,18 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Register(db *database.DB) gin.HandlerFunc {
-
-	fn := func(c *gin.Context) {
-		var user models.User
-		if err := c.ShouldBindJSON(&user); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		created_user := db.CreateUser(user)
-		c.JSON(http.StatusCreated, gin.H{"data": created_user})
+func Register(c *gin.Context) {
+	db := c.MustGet("db_conn").(*database.DB)
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
-	return gin.HandlerFunc(fn)
+	created_user := db.CreateUser(user)
+	c.JSON(http.StatusCreated, gin.H{"data": created_user})
 }
