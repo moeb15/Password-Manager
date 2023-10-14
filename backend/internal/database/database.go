@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 	"os"
-	"pwdmanager_api/helpers"
-	"pwdmanager_api/models"
+	"pwdmanager_api/internal/helpers"
+	"pwdmanager_api/pkg/models"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -47,4 +47,20 @@ func (db *DB) CreateUser(user models.User) *models.User {
 	insert_id := insert.InsertedID.(primitive.ObjectID).Hex()
 	returned_user := models.User{ID: insert_id, Username: user.Username}
 	return &returned_user
+}
+
+func (db *DB) FindUser(id string) (*models.User, error) {
+	obj_id, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return &models.User{}, err
+	}
+
+	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	res := user_coll.FindOne(ctx, bson.M{"_id": obj_id})
+	user := models.User{ID: id}
+
+	res.Decode(&user)
+	return &user, nil
 }

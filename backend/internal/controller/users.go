@@ -2,8 +2,8 @@ package controller
 
 import (
 	"net/http"
-	"pwdmanager_api/database"
-	"pwdmanager_api/models"
+	"pwdmanager_api/internal/database"
+	"pwdmanager_api/pkg/models"
 
 	"github.com/gin-gonic/gin"
 )

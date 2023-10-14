@@ -3,6 +3,7 @@ package models
 type User struct {
 	ID        string `json:"id"`
 	Username  string `json:"username"`
-	Password  string `json:"password"`
-	MasterKey string `json:"masterkey"`
+	Password  string
+	MasterKey string
+	SavedPwds []Password
 }

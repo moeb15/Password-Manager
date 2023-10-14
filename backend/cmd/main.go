@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"pwdmanager_api/controller"
-	"pwdmanager_api/database"
+	"pwdmanager_api/internal/controller"
+	"pwdmanager_api/internal/database"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
