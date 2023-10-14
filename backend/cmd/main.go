@@ -6,6 +6,7 @@ import (
 
 	"pwdmanager_api/internal/controller"
 	"pwdmanager_api/internal/database"
+	"pwdmanager_api/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -26,9 +27,9 @@ func loadEnv() {
 
 func serveApplication(db *database.DB) {
 	router := gin.Default()
-
+	router.Use(middleware.DBMiddleware(db))
 	public_routes := router.Group("/auth")
-	public_routes.POST("/register", controller.Register(db))
+	public_routes.POST("/register", controller.Register)
 
 	log.Fatal(router.Run(":8080"))
 }
