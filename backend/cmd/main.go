@@ -28,8 +28,10 @@ func loadEnv() {
 func serveApplication(db *database.DB) {
 	router := gin.Default()
 	router.Use(middleware.DBMiddleware(db))
+
 	public_routes := router.Group("/auth")
 	public_routes.POST("/register", controller.Register)
+	public_routes.POST("/login", controller.Login)
 
 	log.Fatal(router.Run(":8080"))
 }
