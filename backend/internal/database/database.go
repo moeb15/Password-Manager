@@ -36,9 +36,10 @@ func (db *DB) CreateUser(user models.User) *models.User {
 	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
 	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
 	defer cancel()
-	insert, err := user_coll.InsertOne(ctx, bson.D{{Key: "name", Value: user.Username},
+	insert, err := user_coll.InsertOne(ctx, bson.D{
+		{Key: "name", Value: user.Username},
 		{Key: "password", Value: helpers.HashPwd(user.Password)},
-		{Key: "masterkey", Value: helpers.HashPwd(user.MasterKey)}})
+		{Key: "masterkey", Value: ""}})
 
 	if err != nil {
 		log.Fatal(err)
@@ -60,6 +61,17 @@ func (db *DB) FindUser(id string) (*models.User, error) {
 	defer cancel()
 	res := user_coll.FindOne(ctx, bson.M{"_id": obj_id})
 	user := models.User{ID: id}
+
+	res.Decode(&user)
+	return &user, nil
+}
+
+func (db *DB) FindUserByName(name string) (*models.User, error) {
+	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	res := user_coll.FindOne(ctx, bson.M{"name": name})
+	user := models.User{Username: name}
 
 	res.Decode(&user)
 	return &user, nil
