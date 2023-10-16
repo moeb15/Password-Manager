@@ -6,6 +6,8 @@ import (
 	"encoding/hex"
 )
 
+const key_size = 32
+
 // Hashes password string using SHA256
 func HashPwd(pwd string) string {
 	h := sha256.New()
@@ -21,19 +23,22 @@ func CompareHashes(pwd string, hash string) bool {
 
 // Encrypts plaintext message using AES
 func EncryptAES(key []byte, msg string) (string, error) {
-	c, err := aes.NewCipher(key)
+	new_key := PadOrTrim(key, key_size)
+	padded_msg := PadOrTrim([]byte(msg), key_size)
+	c, err := aes.NewCipher(new_key)
 	if err != nil {
 		return "", err
 	}
 
-	out := make([]byte, len(msg))
-	c.Encrypt(out, []byte(msg))
+	out := make([]byte, key_size)
+	c.Encrypt(out, padded_msg)
 	return hex.EncodeToString(out), nil
 }
 
 // Decrypts ciphertexts generated using AES
 func DecryptAES(key []byte, cphr_txt string) (string, error) {
-	c, err := aes.NewCipher(key)
+	new_key := PadOrTrim(key, key_size)
+	c, err := aes.NewCipher(new_key)
 	if err != nil {
 		return "", err
 	}
@@ -41,5 +46,21 @@ func DecryptAES(key []byte, cphr_txt string) (string, error) {
 	out := make([]byte, len(cphr_txt))
 	c.Decrypt(out, []byte(cphr_txt))
 	msg := string(out[:])
-	return msg, nil
+	return msg[:len(cphr_txt)-key_size], nil
+}
+
+// Pad or trim key to the required key size
+func PadOrTrim(key []byte, size int) []byte {
+	if len(key) == size {
+		return key
+	} else if len(key) > size {
+		return key[:size+1]
+	} else {
+		zero_padding := make([]byte, size-len(key))
+		for k := range zero_padding {
+			zero_padding[k] = 0
+		}
+		key = append(key, zero_padding...)
+		return key
+	}
 }
