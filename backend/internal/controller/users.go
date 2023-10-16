@@ -12,17 +12,13 @@ import (
 
 func Register(c *gin.Context) {
 	db := c.MustGet("db_conn").(*database.DB)
-	var user_auth models.AuthInput
-	if err := c.ShouldBindJSON(&user_auth); err != nil {
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	user := models.User{
-		Username: user_auth.Username,
-		Password: user_auth.Password,
-	}
 	created_user := db.CreateUser(user)
-	c.JSON(http.StatusCreated, gin.H{"data": created_user})
+	c.JSON(http.StatusCreated, gin.H{"data": *created_user})
 }
 
 func Login(c *gin.Context) {
@@ -45,6 +41,8 @@ func Login(c *gin.Context) {
 	}
 
 	jwt, err := auth.GenerateJWT(*user)
-
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
 	c.JSON(http.StatusOK, gin.H{"jwt": jwt})
 }
