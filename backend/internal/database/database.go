@@ -39,13 +39,14 @@ func (db *DB) CreateUser(user models.User) *models.User {
 	insert, err := user_coll.InsertOne(ctx, bson.D{
 		{Key: "name", Value: user.Username},
 		{Key: "password", Value: helpers.HashPwd(user.Password)},
-		{Key: "masterkey", Value: ""}})
+		{Key: "masterkey", Value: helpers.HashPwd(user.MasterKey)}})
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	insert_id := insert.InsertedID.(primitive.ObjectID).Hex()
+	user.ID = insert_id
 	returned_user := models.User{ID: insert_id, Username: user.Username}
 	return &returned_user
 }
@@ -75,4 +76,23 @@ func (db *DB) FindUserByName(name string) (*models.User, error) {
 
 	res.Decode(&user)
 	return &user, nil
+}
+
+func (db *DB) CreatePassword(pwd models.Password, user models.User) *models.Password {
+	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	insert, err := pwd_coll.InsertOne(ctx, bson.D{
+		{Key: "userid", Value: user.ID},
+		{Key: "application", Value: pwd.Application},
+		{Key: "password", Value: helpers.HashPwd(pwd.Password)},
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	insert_id := insert.InsertedID.(primitive.ObjectID).Hex()
+	returned_pwd := models.Password{ID: insert_id, Application: pwd.Application}
+	return &returned_pwd
 }
