@@ -30,8 +30,14 @@ func serveApplication(db *database.DB) {
 	router.Use(middleware.DBMiddleware(db))
 
 	public_routes := router.Group("/auth")
+
 	public_routes.POST("/register", controller.Register)
 	public_routes.POST("/login", controller.Login)
+
+	private_routes := router.Group("/api")
+	private_routes.Use(middleware.JWTAuthMiddleWare())
+
+	private_routes.POST("/pwd", controller.AddPassword)
 
 	log.Fatal(router.Run(":8080"))
 }
