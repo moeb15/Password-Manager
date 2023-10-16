@@ -27,11 +27,11 @@ func GenerateJWT(user models.User) (string, error) {
 	return token.SignedString(private_key)
 }
 
-func CurrentUser(c *gin.Context) (*models.User, error) {
+func CurrentUser(c *gin.Context) (models.User, error) {
 	err := ValidateJWT(c)
 	db := c.MustGet("db_conn").(*database.DB)
 	if err != nil {
-		return &models.User{}, err
+		return models.User{}, err
 	}
 	token, _ := getToken(c)
 	claims, _ := token.Claims.(jwt.MapClaims)
@@ -39,9 +39,9 @@ func CurrentUser(c *gin.Context) (*models.User, error) {
 
 	user, err := db.FindUser(user_id)
 	if err != nil {
-		return &models.User{}, err
+		return models.User{}, err
 	}
-	return user, nil
+	return *user, nil
 }
 
 func ValidateJWT(c *gin.Context) error {
