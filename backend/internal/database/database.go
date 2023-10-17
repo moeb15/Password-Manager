@@ -121,3 +121,16 @@ func (db *DB) FindPasswords(user_id string) ([]*models.Password, error) {
 
 	return pwds, nil
 }
+
+func (db *DB) DeleteByApp(app_name, user_id string) (int, error) {
+	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	res, err := pwd_coll.DeleteOne(ctx, bson.D{
+		{Key: "application", Value: app_name},
+		{Key: "userid", Value: user_id}})
+	if err != nil {
+		return 0, err
+	}
+	return int(res.DeletedCount), nil
+}
