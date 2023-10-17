@@ -108,14 +108,11 @@ func (db *DB) FindPasswords(user_id string) ([]*models.Password, error) {
 
 	var pwds []*models.Password
 	for cur.Next(ctx) {
-		sus, err := cur.Current.Elements()
+		var pwd models.Password
+		err := cur.Decode(&pwd)
 		if err != nil {
-			log.Fatal(err)
+			return []*models.Password{}, err
 		}
-
-		pwd := models.Password{ID: (sus[0].String()), UserID: (sus[1].String()),
-			Application: (sus[2].String()), Password: (sus[3].String())}
-
 		pwds = append(pwds, &pwd)
 	}
 
