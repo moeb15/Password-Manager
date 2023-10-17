@@ -96,3 +96,28 @@ func (db *DB) CreatePassword(pwd models.Password, user models.User) *models.Pass
 	returned_pwd := models.Password{ID: insert_id, Application: pwd.Application}
 	return &returned_pwd
 }
+
+func (db *DB) FindPasswords(user_id string) ([]*models.Password, error) {
+	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	cur, err := pwd_coll.Find(ctx, bson.M{"userid": user_id})
+	if err != nil {
+		return []*models.Password{}, err
+	}
+
+	var pwds []*models.Password
+	for cur.Next(ctx) {
+		sus, err := cur.Current.Elements()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		pwd := models.Password{ID: (sus[0].String()), UserID: (sus[1].String()),
+			Application: (sus[2].String()), Password: (sus[3].String())}
+
+		pwds = append(pwds, &pwd)
+	}
+
+	return pwds, nil
+}
