@@ -42,3 +42,19 @@ func AddPassword(c *gin.Context) {
 	db.CreatePassword(saved_pwd, user)
 	c.JSON(http.StatusCreated, gin.H{"data": ""})
 }
+
+func GetPasswords(c *gin.Context) {
+	db := c.MustGet("db_conn").(*database.DB)
+	user, err := auth.CurrentUser(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	pwds, err := db.FindPasswords(user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusFound, gin.H{"data": pwds})
+}
