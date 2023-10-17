@@ -38,6 +38,7 @@ func serveApplication(db *database.DB) {
 	private_routes.Use(middleware.JWTAuthMiddleWare())
 
 	private_routes.POST("/pwd", controller.AddPassword)
+	private_routes.GET("/pwd", controller.GetPasswords)
 
 	log.Fatal(router.Run(":8080"))
 }
