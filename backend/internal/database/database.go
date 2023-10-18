@@ -85,7 +85,7 @@ func (db *DB) CreatePassword(pwd models.Password, user models.User) *models.Pass
 	insert, err := pwd_coll.InsertOne(ctx, bson.D{
 		{Key: "userid", Value: user.ID},
 		{Key: "application", Value: pwd.Application},
-		{Key: "password", Value: helpers.HashPwd(pwd.Password)},
+		{Key: "password", Value: pwd.Password},
 	})
 
 	if err != nil {
@@ -130,4 +130,17 @@ func (db *DB) DeleteByApp(app_name, user_id string) (int, error) {
 		return 0, err
 	}
 	return int(res.DeletedCount), nil
+}
+
+func (db *DB) RetrieveByApp(app_name, user_id string) models.Password {
+	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	res := pwd_coll.FindOne(ctx, bson.D{
+		{Key: "application", Value: app_name},
+		{Key: "userid", Value: user_id}})
+	var pwd models.Password
+	res.Decode(&pwd)
+
+	return pwd
 }
