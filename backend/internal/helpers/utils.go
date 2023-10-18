@@ -37,16 +37,16 @@ func EncryptAES(key []byte, msg string) (string, error) {
 
 // Decrypts ciphertexts generated using AES
 func DecryptAES(key []byte, cphr_txt string) (string, error) {
+	hex_cpher, _ := hex.DecodeString(cphr_txt)
 	new_key := PadOrTrim(key, key_size)
 	c, err := aes.NewCipher(new_key)
 	if err != nil {
 		return "", err
 	}
-
-	out := make([]byte, len(cphr_txt))
-	c.Decrypt(out, []byte(cphr_txt))
+	out := make([]byte, key_size)
+	c.Decrypt(out, hex_cpher)
 	msg := string(out[:])
-	return msg[:len(cphr_txt)-key_size], nil
+	return msg, nil
 }
 
 // Pad or trim key to the required key size
