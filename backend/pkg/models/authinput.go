@@ -10,3 +10,8 @@ type AuthPwd struct {
 	Password    string `json:"password" binding:"required"`
 	Key         string `json:"key" binding:"required"`
 }
+
+type AuthGetPwd struct {
+	Application string `json:"application" binding:"required"`
+	Key         string `json:"key" binding:"required"`
+}
