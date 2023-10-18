@@ -80,3 +80,32 @@ func DeletePassword(c *gin.Context) {
 
 	c.JSON(http.StatusNotFound, gin.H{"data": ""})
 }
+
+func GetPassword(c *gin.Context) {
+	db := c.MustGet("db_conn").(*database.DB)
+	var pwd_req models.AuthGetPwd
+	if err := c.ShouldBindJSON(&pwd_req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user, err := auth.CurrentUser(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if !helpers.CompareHashes(pwd_req.Key, user.MasterKey) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid key"})
+		return
+	}
+
+	pwd := db.RetrieveByApp(pwd_req.Application, user.ID)
+	raw_pwd, err := helpers.DecryptAES([]byte(pwd_req.Key), pwd.Password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	// removes any characters that are invalid utf8 characters
+	pwd.Password = string([]rune(raw_pwd))
+	c.JSON(http.StatusFound, gin.H{"data": pwd})
+}
