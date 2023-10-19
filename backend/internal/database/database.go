@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"errors"
 	"log"
 	"os"
 	"pwdmanager_api/internal/helpers"
@@ -143,4 +144,21 @@ func (db *DB) RetrieveByApp(app_name, user_id string) models.Password {
 	res.Decode(&pwd)
 
 	return pwd
+}
+
+func (db *DB) UpdatePassword(app_name, new_pwd string, user models.User) (int, error) {
+	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	res, err := pwd_coll.UpdateOne(ctx, bson.D{
+		{Key: "application", Value: app_name},
+		{Key: "userid", Value: user.ID},
+	}, bson.M{"$set": bson.D{{Key: "password", Value: new_pwd}}})
+	if err != nil {
+		return 0, err
+	}
+	if res.MatchedCount == 0 {
+		return 0, errors.New("no matching applications")
+	}
+	return int(res.MatchedCount), nil
 }
