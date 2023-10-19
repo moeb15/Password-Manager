@@ -40,6 +40,7 @@ func serveApplication(db *database.DB) {
 	private_routes.GET("/pwd", controller.GetPasswords)
 	private_routes.POST("/pwd", controller.AddPassword)
 	private_routes.POST("/pwd/decrypt", controller.GetPassword)
+	private_routes.PATCH("/pwd", controller.UpdatePassword)
 	private_routes.DELETE("/pwd", controller.DeletePassword)
 
 	log.Fatal(router.Run(":8080"))

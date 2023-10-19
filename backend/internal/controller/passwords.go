@@ -109,3 +109,35 @@ func GetPassword(c *gin.Context) {
 	pwd.Password = string([]rune(raw_pwd))
 	c.JSON(http.StatusFound, gin.H{"data": pwd})
 }
+
+func UpdatePassword(c *gin.Context) {
+	db := c.MustGet("db_conn").(*database.DB)
+	var pwd_input models.AuthPwd
+	if err := c.ShouldBindJSON(&pwd_input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user, err := auth.CurrentUser(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if !helpers.CompareHashes(pwd_input.Key, user.MasterKey) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid key"})
+		return
+	}
+
+	new_pwd, err := helpers.EncryptAES([]byte(pwd_input.Key), pwd_input.Password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	_, err = db.UpdatePassword(pwd_input.Application, new_pwd, user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": ""})
+}
