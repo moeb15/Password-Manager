@@ -40,7 +40,7 @@ func AddPassword(c *gin.Context) {
 	}
 	user.SavedPwds = append(user.SavedPwds, saved_pwd)
 	db.CreatePassword(saved_pwd, user)
-	c.JSON(http.StatusCreated, gin.H{"data": ""})
+	c.JSON(http.StatusCreated, gin.H{"data": "", "updated_token": c.Request.Header.Get("Updated_Token")})
 }
 
 func GetPasswords(c *gin.Context) {
@@ -56,7 +56,7 @@ func GetPasswords(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusFound, gin.H{"data": pwds})
+	c.JSON(http.StatusFound, gin.H{"data": pwds, "updated_token": c.Request.Header.Get("Updated_Token")})
 }
 
 func DeletePassword(c *gin.Context) {
@@ -78,7 +78,7 @@ func DeletePassword(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusNotFound, gin.H{"data": ""})
+	c.JSON(http.StatusNotFound, gin.H{"data": "", "updated_token": c.Request.Header.Get("Updated_Token")})
 }
 
 func GetPassword(c *gin.Context) {
@@ -107,7 +107,7 @@ func GetPassword(c *gin.Context) {
 	}
 	// removes any characters that are invalid utf8 characters
 	pwd.Password = string([]rune(raw_pwd))
-	c.JSON(http.StatusFound, gin.H{"data": pwd})
+	c.JSON(http.StatusFound, gin.H{"data": pwd, "updated_token": c.Request.Header.Get("Updated_Token")})
 }
 
 func UpdatePassword(c *gin.Context) {
@@ -139,5 +139,5 @@ func UpdatePassword(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": ""})
+	c.JSON(http.StatusOK, gin.H{"data": "", "updated_token": c.Request.Header.Get("Updated_Token")})
 }
