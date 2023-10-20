@@ -38,7 +38,6 @@ func AddPassword(c *gin.Context) {
 		Application: pwd.Application,
 		Password:    enc_pwd,
 	}
-	user.SavedPwds = append(user.SavedPwds, saved_pwd)
 	db.CreatePassword(saved_pwd, user)
 	c.JSON(http.StatusCreated, gin.H{"data": "", "updated_token": c.Request.Header.Get("Updated_Token")})
 }
