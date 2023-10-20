@@ -30,10 +30,21 @@ func Connect(dbURL string) *DB {
 		log.Fatal(err)
 	}
 
+	// creates unique index in users collection
+	mod := mongo.IndexModel{
+		Keys:    bson.M{"name": 1},
+		Options: options.Index().SetUnique(true),
+	}
+	user_coll := client.Database(os.Getenv("DB_NAME")).Collection("users")
+	_, err = user_coll.Indexes().CreateOne(context.TODO(), mod)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return &DB{client: client}
 }
 
-func (db *DB) CreateUser(user models.User) *models.User {
+func (db *DB) CreateUser(user models.User) (*models.User, error) {
 	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
 	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
 	defer cancel()
@@ -43,13 +54,13 @@ func (db *DB) CreateUser(user models.User) *models.User {
 		{Key: "masterkey", Value: helpers.HashPwd(user.MasterKey)}})
 
 	if err != nil {
-		log.Fatal(err)
+		return &models.User{}, err
 	}
 
 	insert_id := insert.InsertedID.(primitive.ObjectID).Hex()
 	user.ID = insert_id
 	returned_user := models.User{ID: insert_id, Username: user.Username}
-	return &returned_user
+	return &returned_user, nil
 }
 
 func (db *DB) FindUser(id string) (*models.User, error) {
