@@ -9,6 +9,8 @@ import (
 	"pwdmanager_api/pkg/models"
 	"time"
 
+	"slices"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -30,6 +32,17 @@ func Connect(dbURL string) *DB {
 		log.Fatal(err)
 	}
 
+	// creates user collection ,if it does not exist, on initial connection
+	names, err := client.Database(os.Getenv("DB_NAME")).ListCollectionNames(context.TODO(), bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !slices.Contains(names, "users") {
+		err = client.Database(os.Getenv("DB_NAME")).CreateCollection(context.TODO(), "users")
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 	// creates unique index in users collection
 	mod := mongo.IndexModel{
 		Keys:    bson.M{"name": 1},
