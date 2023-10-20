@@ -1,5 +1,5 @@
 # Password Manager
-For this project I am working on creating a password manager fullstack application, at the moment the backend has been completed.
+For this project I am working on creating a password manager fullstack application, at the moment the backend is in a viable state.
 So far the following has been completed,
 * User registration/login and password management(create/read/update/delete saved passwords)
 * When users register they include a master-key along with their account credentials, the key is used to encrypt any saved passwords
