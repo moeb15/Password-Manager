@@ -44,5 +44,10 @@ func Login(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
-	c.JSON(http.StatusOK, gin.H{"jwt": jwt})
+
+	rf_jwt, err := auth.GenerateRefreshToken(*user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+	c.JSON(http.StatusOK, gin.H{"access_token": jwt, "refresh_token": rf_jwt})
 }
