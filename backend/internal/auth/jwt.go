@@ -21,7 +21,7 @@ func GenerateJWT(user models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  user.ID,
 		"iat": time.Now().Unix(),
-		"eat": time.Now().Add(time.Minute * time.Duration(token_ttl)).Unix(),
+		"exp": time.Now().Add(time.Minute * time.Duration(token_ttl)).Unix(),
 	})
 
 	return token.SignedString(private_key)
@@ -32,7 +32,7 @@ func GenerateRefreshToken(user models.User) (string, error) {
 	rf_token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  user.ID,
 		"iat": time.Now().Unix(),
-		"eat": time.Now().Add(time.Hour * time.Duration(rf_ttl)).Unix(),
+		"exp": time.Now().Add(time.Hour * time.Duration(rf_ttl)).Unix(),
 	})
 
 	return rf_token.SignedString(private_key)
@@ -46,7 +46,7 @@ func JWTFromRefresh(rf_token *jwt.Token) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  user_id,
 		"iat": time.Now().Unix(),
-		"eat": time.Now().Add(time.Second * time.Duration(token_ttl)).Unix(),
+		"exp": time.Now().Add(time.Minute * time.Duration(token_ttl)).Unix(),
 	})
 
 	return token.SignedString(private_key)
@@ -127,10 +127,6 @@ func GetRefreshToken(c *gin.Context) (*jwt.Token, error) {
 }
 
 func getRefreshTokenFromRequest(c *gin.Context) string {
-	refresh_token := c.Request.Header.Get("Refresh")
-	split_token := strings.Split(refresh_token, " ")
-	if len(split_token) == 2 {
-		return split_token[1]
-	}
-	return ""
+	refresh_token := c.Request.Header["Refresh"][0]
+	return refresh_token
 }
