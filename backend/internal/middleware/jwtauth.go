@@ -34,6 +34,7 @@ func JWTAuthMiddleWare() gin.HandlerFunc {
 			c.Request.Header.Set("Updated_Token", access_token)
 			c.Next()
 		}
+		c.Request.Header.Set("Updated_Token", "")
 		c.Next()
 	}
 }
