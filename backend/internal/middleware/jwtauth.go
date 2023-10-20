@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"pwdmanager_api/internal/auth"
 
@@ -29,8 +30,9 @@ func JWTAuthMiddleWare() gin.HandlerFunc {
 				c.Abort()
 				return
 			}
-			c.JSON(http.StatusCreated, gin.H{"access_token": access_token})
-			c.Request.Header.Set("Authroization", access_token)
+			c.Request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", access_token))
+			c.Request.Header.Set("Updated_Token", access_token)
+			c.Next()
 		}
 		c.Next()
 	}
