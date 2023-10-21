@@ -21,3 +21,5 @@ const useFetch = (url,{props}) => {
         }
     },[url, props])
 }
+
+export default useFetch;
