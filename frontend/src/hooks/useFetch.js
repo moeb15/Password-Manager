@@ -19,7 +19,10 @@ const useFetch = (url,{props}) => {
                 setError(error)
             }
         }
+        getData();
     },[url, props])
+
+    return [ data,err ];
 }
 
 export default useFetch;
