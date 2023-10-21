@@ -3,11 +3,13 @@ package main
 import (
 	"log"
 	"os"
+	"time"
 
 	"pwdmanager_api/internal/controller"
 	"pwdmanager_api/internal/database"
 	"pwdmanager_api/internal/middleware"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -28,6 +30,13 @@ func loadEnv() {
 func serveApplication(db *database.DB) {
 	router := gin.Default()
 	router.Use(middleware.DBMiddleware(db))
+	router.Use(cors.New(cors.Config{
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		AllowCredentials: false,
+		AllowAllOrigins:  true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	public_routes := router.Group("/auth")
 
