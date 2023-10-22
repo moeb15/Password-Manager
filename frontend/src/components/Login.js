@@ -3,10 +3,35 @@ import { useState } from "react";
 function Login(){
     const [ user,setUser ] = useState("");
     const [ pwd,setPwd ] = useState("");
+    const [ data,setData ] = useState({});
 
-    const handleSubmit = e =>{
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        alert(`${user} ${pwd}`)
+        const login_url = "http://localhost:8080/auth/login";
+        let req = {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                username:user,
+                password:pwd
+            })
+        }
+        
+        try{
+            const response = await fetch(login_url,req);
+            const json = await response.json();
+            if(response.status/100 === 2){
+                setData(json);
+                localStorage.setItem("access_token",data.access_token);
+                localStorage.setItem("refesh_token",data.refresh_token);
+            }else{
+                alert("invalid credentials");
+            }
+        }catch (error){
+            alert("Internal server error");
+        }
     }
 
     return(
