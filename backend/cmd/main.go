@@ -32,7 +32,7 @@ func serveApplication(db *database.DB) {
 	router.Use(middleware.DBMiddleware(db))
 	router.Use(cors.New(cors.Config{
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Refresh"},
 		AllowCredentials: false,
 		AllowAllOrigins:  true,
 		MaxAge:           12 * time.Hour,
