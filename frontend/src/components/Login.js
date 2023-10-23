@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login(){
     const [ user,setUser ] = useState("");
     const [ pwd,setPwd ] = useState("");
-    const [ data,setData ] = useState({});
+    const navigate = useNavigate();
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -24,9 +25,9 @@ function Login(){
             const response = await fetch(login_url,req);
             const json = await response.json();
             if(response.status/100 === 2){
-                setData(json);
-                localStorage.setItem("access_token",data.access_token);
-                localStorage.setItem("refesh_token",data.refresh_token);
+                localStorage.setItem("access_token",json.access_token);
+                localStorage.setItem("refesh_token",json.refresh_token);
+                navigate("/home");
             }else{
                 alert("invalid credentials");
             }
