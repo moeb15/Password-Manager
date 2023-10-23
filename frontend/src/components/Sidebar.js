@@ -12,7 +12,7 @@ function Sidebar(){
     ]
 
     return(
-        <div className="bg-[#2a254e] h-screen p-5 pt-8 sm:w-[30vh] absolute
+        <div className="bg-[#2a254e] h-screen p-5 pt-8 sm:w-[30vh] relative
                         font-bold text-2xl hidden sm:flex flex-col items-center text-left">
             <div>
                 <AiFillLock size={30} color="white"
