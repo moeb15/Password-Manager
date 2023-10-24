@@ -1,9 +1,11 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 	"pwdmanager_api/internal/auth"
 	"pwdmanager_api/internal/database"
+	email "pwdmanager_api/internal/email_auth"
 	"pwdmanager_api/internal/helpers"
 	"pwdmanager_api/pkg/models"
 
@@ -23,6 +25,8 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	err = email.RegistrationEmail(user)
+	log.Println(err)
 	c.JSON(http.StatusCreated, gin.H{"data": *created_user})
 }
 
@@ -34,7 +38,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	user, err := db.FindUserByName(user_auth.Username)
+	user, err := db.FindUserByEmail(user_auth.Email)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
