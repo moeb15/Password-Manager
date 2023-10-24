@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 
 function Passwords(){
     const getpwds_url = "http://localhost:8080/api/pwd";
-    const [ data,setData ] = useState([]);
+    const [ data,setData ] = useState(null);
     const [ token,setToken ] = useState("");
+    let len = data === null? 0:data.length;
+
     useEffect(()=>{
             const getData = async() =>{
             try{
@@ -27,13 +29,16 @@ function Passwords(){
             }
         }
         getData();
-    },[data.userid,token])
+        
+    },[len,token])
     return(
         <div className="shadow-md shadow-black flex flex-col h-[67vh] p-6 w-screen
                         overflow-y-scroll">
-            {Array.from(data).map((pwd,idx)=>(
+            {data !== null?
+            Array.from(data).map((pwd,idx)=>(
                 <PwdContainer key={idx} props={pwd}/>
-            ))}
+            )):
+            <h1>No Saved Passwords</h1>}
         </div>
     );
 }
