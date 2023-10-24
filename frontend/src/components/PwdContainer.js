@@ -30,8 +30,8 @@ function PwdContainer({props}){
                 if (json.updated_token !== ""){
                     localStorage.setItem("access_token",json.updated_token)
                 }
-                await navigator.clipboard.writeText(pwdData.password);
-                alert("Password copied to clipboard");
+                navigator.clipboard.writeText(pwdData.password)
+                .then(alert("Password copied to clipboard"))
             }else{
                 alert("Invalid key");
             }
@@ -63,34 +63,38 @@ function PwdContainer({props}){
     }
 
     return(
-        <div className="bg-[#2a254e] text-lg text-gray-300 w-fit
+        <div className="bg-[#2a254e] text-lg text-gray-300 w-[184vh]
                         h-fit flex flex-col md:flex-row items-center p-3
                         rounded-md mt-3">
-            <div className="flex flex-row mx-3">
-                <AiFillAppstore size={25} className="mx-3"/>
-                <h3>{props.application}</h3>
-            </div> 
-            <div className="flex flex-row">
-                <AiFillLock size={25} className="mx-3"/>
-                <h3>{props.password}</h3>
-            </div>
-            <div className="h-full pl-[15vh]">
-                <div className="flex rounded-md items-center
-                bg-slate-700 h-full text-left w-[30vh]">
-                    <BsFillKeyFill size={25} className="mx-3"/>
-                    <input type="password" 
-                        placeholder="Key"
-                        value={key}
-                        onChange={e=>{setKey(e.target.value)}}
-                        className="text-sm w-full text-gray-330 focus:outline-none
-                                    bg-transparent ml-2"/>
+            <div className="grid grid-cols-3">
+                <div className="flex flex-row">
+                    <AiFillAppstore size={25} className="mx-3"/>
+                    <h3>{props.application}</h3>
+                </div> 
+                <div className="flex flex-row mx-[-32vh]">
+                    <AiFillLock size={25} className="mx-3"/>
+                    <h3>{props.password}</h3>
+                </div>
+                <div className="flex flex-row">
+                    <div className="h-full pl-[10vh]">
+                        <div className="flex rounded-md items-center
+                        bg-slate-700 h-full text-left w-[30vh]">
+                            <BsFillKeyFill size={25} className="mx-3"/>
+                            <input type="password" 
+                                placeholder="Key"
+                                value={key}
+                                onChange={e=>{setKey(e.target.value)}}
+                                className="text-sm w-full text-gray-330 focus:outline-none
+                                            bg-transparent ml-2"/>
+                        </div>
+                    </div>
+                    <IoCopySharp size={25} className="ml-5 cursor-pointer"
+                                onClick={handleCopy}/>
+                    <AiFillDelete size={30} className="ml-5 cursor-pointer"
+                                onClick={handleDel}/>
+                    <AiFillEdit size={30} className="ml-4 cursor-pointer"/>
                 </div>
             </div>
-            <IoCopySharp size={25} className="ml-5 cursor-pointer"
-                         onClick={handleCopy}/>
-            <AiFillDelete size={30} className="ml-5 cursor-pointer"
-                         onClick={handleDel}/>
-            <AiFillEdit size={30} className="ml-4 cursor-pointer"/>
         </div>
     )
 }
