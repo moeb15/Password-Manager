@@ -7,22 +7,21 @@ import { useNavigate } from "react-router-dom";
 
 function Sidebar(){
     const navigate = useNavigate();
-
     const menu = [
-        {title:"Dashboard", icon:<MdSpaceDashboard className="mr-1"
-                            onClick={e=>{
+        {title:"Dashboard", icon:<MdSpaceDashboard className="mr-1"/>,
+                            clickFn: e => {
                                 e.preventDefault();
                                 navigate("/home");
                                 window.location.reload();
-                            }}/>},
-        {title:"Profile", icon:<FaUserAlt className="mr-1"/>},
-        {title:"Logout", icon:<BiSolidLogOut className="mr-1"
-                              onClick={e=>{
-                                e.preventDefault();
-                                localStorage.clear();
-                                navigate("/");
-                                window.location.reload();
-                              }}/>}
+                            }},
+        {title:"Profile", icon:<FaUserAlt className="mr-1"/>, clickFn:null},
+        {title:"Logout", icon:<BiSolidLogOut className="mr-1"/>,
+                        clickFn: e => {
+                            e.preventDefault();
+                            localStorage.clear();
+                            navigate("/");
+                            window.location.reload();
+                        }}
     ]
 
     return(
@@ -45,7 +44,8 @@ function Sidebar(){
                     <>
                         <li key={idx} className="text-gray-300 text-sm flex items-center
                                                 gap=x=4 cursor-pointer p-2 hover:bg-slate-700 
-                                                duration-75 rounded-md mt-2">
+                                                duration-75 rounded-md mt-2"
+                            onClick={item.clickFn}>
                             {item.icon}
                             <span className="block float-left">{item.title}</span>
                         </li>
