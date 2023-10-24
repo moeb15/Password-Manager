@@ -8,7 +8,7 @@ function Register(){
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        const login_url = "http://localhost:8080/auth/register";
+        const login_url = `${process.env.REACT_APP_AUTH_URL}/register`;
         let req = {
             method:"POST",
             headers:{

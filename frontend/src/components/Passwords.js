@@ -2,7 +2,7 @@ import PwdContainer from "./PwdContainer";
 import { useEffect, useState } from "react";
 
 function Passwords(){
-    const getpwds_url = "http://localhost:8080/api/pwd";
+    const getpwds_url = `${process.env.REACT_APP_API_URL}/pwd`;
     const [ data,setData ] = useState(null);
     const [ token,setToken ] = useState("");
     

@@ -9,7 +9,7 @@ function PwdContainer({props}){
 
     const handleCopy = async(e) => {
         e.preventDefault();
-        const fetchpwd_url = "http://localhost:8080/api/pwd/decrypt"
+        const fetchpwd_url = `${process.env.REACT_APP_API_URL}/pwd/decrypt`
         const req = {
             method:"POST",
             headers:{
@@ -42,7 +42,7 @@ function PwdContainer({props}){
 
     const handleDel = async(e) => {
         e.preventDefault();
-        const del_url = `http://localhost:8080/api/pwd?app=${props.application}`
+        const del_url = `${process.env.REACT_APP_API_URL}/pwd?app=${props.application}`
         try{
             const req = {
                 method:"DELETE",

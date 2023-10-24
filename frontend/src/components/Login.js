@@ -9,7 +9,7 @@ function Login(){
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        const login_url = "http://localhost:8080/auth/login";
+        const login_url = `${process.env.REACT_APP_AUTH_URL}/login`;
         let req = {
             method:"POST",
             headers:{

@@ -9,7 +9,7 @@ function AddPassword(){
 
     const handleCreate = async(e) => {
         e.preventDefault();
-        const add_url = "http://localhost:8080/api/pwd"
+        const add_url = `${`${process.env.REACT_APP_API_URL}/pwd`}`
         try{
             const req = {
                 method:"POST",
@@ -32,6 +32,7 @@ function AddPassword(){
                 if(json.updated_token !== ""){
                     localStorage.setItem("access_token",json.updated_token)
                 }
+                window.location.reload();
             }
         }catch (error){
             alert(error);
