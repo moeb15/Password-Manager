@@ -23,7 +23,7 @@ function Register(){
         
         try{
             const response = await fetch(login_url,req);
-            if(response.status/100 !== 2){
+            if(response.status !== 201){
                 alert("Username in use");
             }else{
                 alert("Account created");
