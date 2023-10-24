@@ -32,7 +32,7 @@ function Passwords(){
         
     },[len,token])
     return(
-        <div className="shadow-md shadow-black flex flex-col h-[67vh] p-6 w-screen
+        <div className="shadow-md shadow-black flex flex-col h-[77vh] p-6 w-screen
                         overflow-y-scroll">
             {data !== null?
             Array.from(data).map((pwd,idx)=>(
