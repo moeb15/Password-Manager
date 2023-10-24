@@ -63,22 +63,23 @@ function PwdContainer({props}){
     }
 
     return(
-        <div className="bg-[#2a254e] text-lg text-gray-300 w-[184vh]
+        <div className="bg-[#2a254e] text-lg text-gray-300 sm:w-fit
                         h-fit flex flex-col md:flex-row items-center p-3
                         rounded-md mt-3">
-            <div className="grid grid-cols-3">
+            <div className="flex flex-col items-center w-fit
+                            lg:grid lg:grid-cols-3 ">
                 <div className="flex flex-row">
                     <AiFillAppstore size={25} className="mx-3"/>
                     <h3>{props.application}</h3>
                 </div> 
-                <div className="flex flex-row mx-[-32vh]">
+                <div className="hidden lg:flex flex-row mx-[-32vh]">
                     <AiFillLock size={25} className="mx-3"/>
                     <h3>{props.password}</h3>
                 </div>
-                <div className="flex flex-row">
-                    <div className="h-full pl-[10vh]">
+                <div className="flex flex-col items-center sm:flex-row ">
+                    <div className="h-full pl-[1vh] lg:pl-[10vh]">
                         <div className="flex rounded-md items-center
-                        bg-slate-700 h-full text-left w-[30vh]">
+                        bg-slate-700 h-full text-left sm:w-[30vh]">
                             <BsFillKeyFill size={25} className="mx-3"/>
                             <input type="password" 
                                 placeholder="Key"
@@ -88,11 +89,13 @@ function PwdContainer({props}){
                                             bg-transparent ml-2"/>
                         </div>
                     </div>
-                    <IoCopySharp size={25} className="ml-5 cursor-pointer"
-                                onClick={handleCopy}/>
-                    <AiFillDelete size={30} className="ml-5 cursor-pointer"
-                                onClick={handleDel}/>
-                    <AiFillEdit size={30} className="ml-4 cursor-pointer"/>
+                    <div className="flex flex-row mt-5 sm:mt-0">
+                        <IoCopySharp size={25} className="ml-5 cursor-pointer"
+                                    onClick={handleCopy}/>
+                        <AiFillDelete size={30} className="ml-5 cursor-pointer"
+                                    onClick={handleDel}/>
+                        <AiFillEdit size={30} className="ml-4 cursor-pointer"/>
+                    </div>
                 </div>
             </div>
         </div>
