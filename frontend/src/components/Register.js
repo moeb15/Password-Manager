@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 function Register(){
     const [ user,setUser ] = useState("");
     const [ pwd,setPwd ] = useState("");
+    const [ email,setEmail ] = useState("");
     const [ key,setKey ] = useState("");
 
     const handleSubmit = async(e) => {
@@ -17,7 +18,8 @@ function Register(){
             body:JSON.stringify({
                 username:user,
                 password:pwd,
-                masterkey:key
+                masterkey:key,
+                email:email
             })
         }
         
@@ -36,7 +38,7 @@ function Register(){
     return(
         <div className="w-full h-screen text-center items-center
                         text-gray-300 flex flex-col justify-center">
-            <form className="flex flex-col w-[30vh] text-lg"
+            <form className="flex flex-col w-[35vh] text-lg"
                   onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label>
                 <input type="text"
@@ -44,7 +46,14 @@ function Register(){
                        value={user}
                        onChange={e=>setUser(e.target.value)}
                        className="bg-black my-3"/>
-                
+
+                <label htmlFor="email">Email</label>
+                <input type="email"
+                       placeholder="Email"
+                       value={email}
+                       onChange={e=>setEmail(e.target.value)}
+                       className="bg-black my-3"/>
+
                 <label htmlFor="password">Password</label>
                 <input type="password"
                        placeholder="Password"

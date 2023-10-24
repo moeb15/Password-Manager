@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Login(){
-    const [ user,setUser ] = useState("");
+    const [ email,setEmail ] = useState("");
     const [ pwd,setPwd ] = useState("");
     const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ function Login(){
                 "Content-Type":"application/json"
             },
             body:JSON.stringify({
-                username:user,
+                email:email,
                 password:pwd
             })
         }
@@ -39,13 +39,13 @@ function Login(){
     return(
         <div className="w-full h-screen text-center items-center
                         text-gray-300 flex flex-col justify-center">
-            <form className="flex flex-col w-[30vh] text-lg"
+            <form className="flex flex-col w-[35vh] text-lg"
                   onSubmit={handleSubmit}>
-                <label htmlFor="username">Username</label>
-                <input type="text"
-                       placeholder="Username"
-                       value={user}
-                       onChange={e=>setUser(e.target.value)}
+                <label htmlFor="email">Email</label>
+                <input type="email"
+                       placeholder="Email"
+                       value={email}
+                       onChange={e=>setEmail(e.target.value)}
                        className="bg-black my-3"/>
                 
                 <label htmlFor="password">Password</label>
