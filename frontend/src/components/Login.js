@@ -26,7 +26,7 @@ function Login(){
             const json = await response.json();
             if(response.status/100 === 2){
                 localStorage.setItem("access_token",json.access_token);
-                localStorage.setItem("refesh_token",json.refresh_token);
+                localStorage.setItem("refresh_token",json.refresh_token);
                 navigate("/home");
             }else{
                 alert("invalid credentials");
