@@ -40,6 +40,28 @@ function PwdContainer({props}){
         }
     }
 
+    const handleDel = async(e) => {
+        e.preventDefault();
+        const del_url = `http://localhost:8080/api/pwd?app=${props.application}`
+        try{
+            const req = {
+                method:"DELETE",
+                headers:{
+                    "Content-Type":"application/json",
+                    Authorization:`Bearer ${localStorage.getItem("access_token")}`,
+                    Refresh:localStorage.getItem("refresh_token")
+                },
+            }
+            const response = await fetch(del_url,req)
+            if(response.status === 404){
+                alert("Password deleted");
+                window.location.reload();
+            }
+        }catch(error){
+            alert(error);
+        }
+    }
+
     return(
         <div className="bg-[#2a254e] text-lg text-gray-300 w-fit
                         h-fit flex flex-col md:flex-row items-center p-3
@@ -66,7 +88,8 @@ function PwdContainer({props}){
             </div>
             <IoCopySharp size={25} className="ml-5 cursor-pointer"
                          onClick={handleCopy}/>
-            <AiFillDelete size={30} className="ml-5 cursor-pointer"/>
+            <AiFillDelete size={30} className="ml-5 cursor-pointer"
+                         onClick={handleDel}/>
             <AiFillEdit size={30} className="ml-4 cursor-pointer"/>
         </div>
     )
