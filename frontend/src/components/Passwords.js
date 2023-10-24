@@ -5,8 +5,7 @@ function Passwords(){
     const getpwds_url = "http://localhost:8080/api/pwd";
     const [ data,setData ] = useState(null);
     const [ token,setToken ] = useState("");
-    let len = data === null? 0:data.length;
-
+    
     useEffect(()=>{
             const getData = async() =>{
             try{
@@ -19,8 +18,12 @@ function Passwords(){
                     }
                 });
                 const json = await response.json();
-                setData(json.data);
-                setToken(json.updated_token);
+                if(data !== json.data){
+                    setData(json.data);
+                }
+                if(token !== json.updated_token){
+                    setToken(json.updated_token);
+                }
                 if(token !== "" && token !== localStorage.getItem("access_token")){
                     localStorage.setItem("access_token",token);
                 }
@@ -30,7 +33,7 @@ function Passwords(){
         }
         getData();
         
-    },[len,token])
+    },[])
     return(
         <div className="shadow-md shadow-black flex flex-col h-[77vh] p-6 w-screen
                         overflow-y-scroll">

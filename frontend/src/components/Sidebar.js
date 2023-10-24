@@ -3,12 +3,26 @@ import { BsSearch } from "react-icons/bs";
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import { BiSolidLogOut } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar(){
+    const navigate = useNavigate();
+
     const menu = [
-        {title:"Dashboard", icon:<MdSpaceDashboard className="mr-1"/>},
+        {title:"Dashboard", icon:<MdSpaceDashboard className="mr-1"
+                            onClick={e=>{
+                                e.preventDefault();
+                                navigate("/home");
+                                window.location.reload();
+                            }}/>},
         {title:"Profile", icon:<FaUserAlt className="mr-1"/>},
-        {title:"Logout", icon:<BiSolidLogOut className="mr-1"/>}
+        {title:"Logout", icon:<BiSolidLogOut className="mr-1"
+                              onClick={e=>{
+                                e.preventDefault();
+                                localStorage.clear();
+                                navigate("/");
+                                window.location.reload();
+                              }}/>}
     ]
 
     return(
