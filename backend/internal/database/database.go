@@ -45,7 +45,7 @@ func Connect(dbURL string) *DB {
 	}
 	// creates unique index in users collection
 	mod := mongo.IndexModel{
-		Keys:    bson.M{"name": 1},
+		Keys:    bson.M{"email": 1},
 		Options: options.Index().SetUnique(true),
 	}
 	user_coll := client.Database(os.Getenv("DB_NAME")).Collection("users")
@@ -63,6 +63,7 @@ func (db *DB) CreateUser(user models.User) (*models.User, error) {
 	defer cancel()
 	insert, err := user_coll.InsertOne(ctx, bson.D{
 		{Key: "name", Value: user.Username},
+		{Key: "email", Value: user.Email},
 		{Key: "password", Value: helpers.HashPwd(user.Password)},
 		{Key: "masterkey", Value: helpers.HashPwd(user.MasterKey)}})
 
@@ -72,7 +73,7 @@ func (db *DB) CreateUser(user models.User) (*models.User, error) {
 
 	insert_id := insert.InsertedID.(primitive.ObjectID).Hex()
 	user.ID = insert_id
-	returned_user := models.User{ID: insert_id, Username: user.Username}
+	returned_user := models.User{ID: insert_id, Username: user.Username, Email: user.Email}
 	return &returned_user, nil
 }
 
@@ -92,12 +93,12 @@ func (db *DB) FindUser(id string) (*models.User, error) {
 	return &user, nil
 }
 
-func (db *DB) FindUserByName(name string) (*models.User, error) {
+func (db *DB) FindUserByEmail(email string) (*models.User, error) {
 	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
 	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
 	defer cancel()
-	res := user_coll.FindOne(ctx, bson.M{"name": name})
-	user := models.User{Username: name}
+	res := user_coll.FindOne(ctx, bson.M{"email": email})
+	user := models.User{Email: email}
 
 	res.Decode(&user)
 	return &user, nil
