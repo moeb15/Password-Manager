@@ -39,14 +39,14 @@ function AddPassword(){
     }
 
     return(
-        <div className="shadow-md shadow-black flex flex-row h-[20vh] p-6
-                        mb-3">
-            <div className="bg-[#2a254e] text-lg text-gray-300 w-[184vh]
-                        h-full flex flex-col md:flex-row items-center p-3
+        <div className="shadow-md shadow-black flex flex-row h-fit lg:h-[20vh] p-6
+                        mb-3 w-full justify-center sm:justify-normal">
+            <div className="bg-[#2a254e] text-lg text-gray-300 w-fit
+                        h-full flex flex-col lg:grid lg:grid-cols-4 items-center p-3
                         rounded-md mt-3">
-            <div className="h-[7vh] mx-3">
-                <div className="flex rounded-md items-center
-                bg-slate-700 h-full text-left w-[40vh]">
+            <div className="h-[7vh] sm:mx-3 mt-3 lg:mt-0 ">
+                <div className="flex flex-row rounded-md items-center
+                bg-slate-700 h-full text-left w-[30vh] sm:w-[34vh] lg:w-[40vh]">
                     <AiFillAppstore size={30} className="mx-3"/>
                     <input type="text" 
                         placeholder="Application Name"
@@ -56,9 +56,9 @@ function AddPassword(){
                                     bg-transparent ml-2"/>
                 </div>
             </div>
-            <div className="h-[7vh] pl-[12vh] mx-3">
+            <div className="h-[7vh] sm:mx-3 mt-3 lg:mt-0">
                 <div className="flex rounded-md items-center
-                bg-slate-700 h-full text-left w-[40vh]">
+                bg-slate-700 h-full text-left w-[30vh] sm:w-[34vh] lg:w-[40vh]">
                     <AiFillLock size={30} className="mx-3"/>
                     <input type="password" 
                         placeholder="Password"
@@ -68,9 +68,9 @@ function AddPassword(){
                                     bg-transparent ml-2"/>
                 </div>
             </div>
-            <div className="h-[7vh] pl-[12vh] mx-3">
+            <div className="h-[7vh] sm:mx-4 mt-3 lg:mt-0">
                 <div className="flex rounded-md items-center
-                bg-slate-700 h-full text-left w-[40vh]">
+                bg-slate-700 h-full text-left w-[30vh] sm:w-[34vh] lg:w-[40vh]">
                     <BsFillKeyFill size={30} className="mx-3"/>
                     <input type="password" 
                         placeholder="Encryption Key"
@@ -80,7 +80,7 @@ function AddPassword(){
                                     bg-transparent ml-2"/>
                 </div>
             </div>
-            <AiFillFileAdd size={30} className="ml-[15vh] cursor-pointer"
+            <AiFillFileAdd size={30} className="lg:ml-[34vh] cursor-pointer mt-3 lg:mt-0"
                            onClick={handleCreate}/>
             </div>
         </div>
