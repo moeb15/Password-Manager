@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"pwdmanager_api/internal/auth"
 	"pwdmanager_api/internal/database"
-	email "pwdmanager_api/internal/email_auth"
 	"pwdmanager_api/internal/helpers"
 	"pwdmanager_api/pkg/models"
 
@@ -25,7 +24,7 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	err = email.RegistrationEmail(user)
+	err = auth.RegistrationEmail(user)
 	log.Println(err)
 	c.JSON(http.StatusCreated, gin.H{"data": *created_user})
 }
