@@ -22,7 +22,8 @@ func DeleteAccount(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if !helpers.CompareHashes(auth_input.Password, user.Password) {
+	if !helpers.CompareHashes(auth_input.Password, user.Password) ||
+		user.Email != auth_input.Email {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
