@@ -1,7 +1,7 @@
 # Password Manager
-For this project I am working on creating a password manager fullstack application, at the moment the following has been completed,
+For this project I am working on creating a password manager fullstack application. 
 
-So far the following has been completed,
+At the moment the following has been completed,
 * User registration/login, password management(create/read/update/delete saved passwords), and account management
 * Emails sent to verify account creation/deletion
 * When users register they include a master-key along with their account credentials, the key is used to encrypt any saved passwords, a verification email is sent if the account is created
