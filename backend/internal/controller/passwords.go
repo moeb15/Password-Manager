@@ -36,6 +36,7 @@ func AddPassword(c *gin.Context) {
 	saved_pwd := models.Password{
 		UserID:      user.ID,
 		Application: pwd.Application,
+		Username:    pwd.Username,
 		Password:    enc_pwd,
 	}
 	db.CreatePassword(saved_pwd, user)
