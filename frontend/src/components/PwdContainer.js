@@ -103,7 +103,7 @@ function PwdContainer({props}){
     return(
         <div className="bg-[#2a254e] text-lg text-gray-300 sm:w-fit
                         h-fit flex flex-col md:flex-row items-center p-3
-                        rounded-md mt-3">
+                        rounded-md mt-3 justify-center">
             <div className="flex flex-col items-center w-fit
                             lg:grid lg:grid-cols-[34vh,30vh,40vh,60vh]">
                 <div className="flex flex-row">
