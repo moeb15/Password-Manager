@@ -7,11 +7,13 @@ type AuthInput struct {
 
 type AuthPwd struct {
 	Application string `json:"application" binding:"required"`
+	Username    string `json:"username" binding:"required"`
 	Password    string `json:"password" binding:"required"`
 	Key         string `json:"key" binding:"required"`
 }
 
 type AuthGetPwd struct {
 	Application string `json:"application" binding:"required"`
+	Username    string `json:"username" binding:"required"`
 	Key         string `json:"key" binding:"required"`
 }

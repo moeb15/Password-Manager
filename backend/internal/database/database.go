@@ -111,6 +111,7 @@ func (db *DB) CreatePassword(pwd models.Password, user models.User) *models.Pass
 	insert, err := pwd_coll.InsertOne(ctx, bson.D{
 		{Key: "userid", Value: user.ID},
 		{Key: "application", Value: pwd.Application},
+		{Key: "username", Value: pwd.Username},
 		{Key: "password", Value: pwd.Password},
 	})
 
