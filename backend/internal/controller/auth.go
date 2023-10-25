@@ -33,6 +33,7 @@ func DeleteAccount(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	auth.DeletionEmail(user)
 
 	c.JSON(http.StatusNotFound, gin.H{"data": ""})
 }
