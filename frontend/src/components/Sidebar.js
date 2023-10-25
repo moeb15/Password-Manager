@@ -5,7 +5,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { BiSolidLogOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
-function Sidebar(){
+function Sidebar({prfl,setPrfl}){
     const navigate = useNavigate();
     const menu = [
         {title:"Dashboard", icon:<MdSpaceDashboard className="mr-1"/>,
@@ -14,7 +14,8 @@ function Sidebar(){
                                 navigate("/home");
                                 window.location.reload();
                             }},
-        {title:"Profile", icon:<FaUserAlt className="mr-1"/>, clickFn:null},
+        {title:"Profile", icon:<FaUserAlt className="mr-1"/>, 
+                          clickFn: e => setPrfl(!prfl)},
         {title:"Logout", icon:<BiSolidLogOut className="mr-1"/>,
                         clickFn: e => {
                             e.preventDefault();

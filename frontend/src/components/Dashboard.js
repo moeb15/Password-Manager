@@ -4,9 +4,11 @@ import AddPassword from "./AddPassword";
 import { FaTimes,FaBars } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Profile from "./Profile";
 
 function Dashboard(){
     const [ menu,setMenu ] = useState(false);
+    const [ prfl,showPrfl ] = useState(false);
     const handleClick = () => setMenu(!menu)
     const navigate = useNavigate();
 
@@ -28,7 +30,7 @@ function Dashboard(){
 
     return(
         <div className="w-full h-screen text-3xl text-gray-300 flex flex-row">
-            <Sidebar />
+            <Sidebar prfl={prfl} setPrfl={showPrfl} />
             <div className="fixed sm:hidden z-10">
                 {!menu? 
                 <FaBars className="m-2 cursor-pointer"
@@ -49,11 +51,14 @@ function Dashboard(){
                     onClick={handleLogout}>
                     Logout
                 </li>
-            </ul>   
+            </ul>
+            {!prfl ?   
             <div className="w-screen h-screen items-center justify-center flex flex-col">
                 <AddPassword/>
                 <Passwords />
             </div>
+            :
+            <Profile />}
         </div>
     )
 }
