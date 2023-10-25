@@ -192,13 +192,19 @@ func (db *DB) UpdatePassword(app_name, new_pwd string, user models.User) (int, e
 func (db *DB) DeleteAccount(user models.User) error {
 	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
 	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
-	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
-	defer cancel()
-	_, err := pwd_coll.DeleteMany(ctx, bson.M{"userid": user.ID})
+
+	obj_id, err := primitive.ObjectIDFromHex(user.ID)
 	if err != nil {
 		return err
 	}
-	_, err = user_coll.DeleteOne(ctx, bson.M{"_id": user.ID})
+
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	_, err = pwd_coll.DeleteMany(ctx, bson.M{"userid": user.ID})
+	if err != nil {
+		return err
+	}
+	_, err = user_coll.DeleteOne(ctx, bson.M{"_id": obj_id})
 	if err != nil {
 		return err
 	}
