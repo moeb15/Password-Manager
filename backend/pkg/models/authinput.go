@@ -5,6 +5,11 @@ type AuthInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type AuthUserPwd struct {
+	OldPassword string `json:"password" binding:"required"`
+	NewPassword string `json:"new_password" binding:"required"`
+}
+
 type AuthPwd struct {
 	Application string `json:"application" binding:"required"`
 	Username    string `json:"username" binding:"required"`
