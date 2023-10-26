@@ -41,7 +41,7 @@ function Passwords(){
             Array.from(data).map((pwd,idx)=>(
                 <PwdContainer key={idx} props={pwd}/>
             )):
-            <h1>No Saved Passwords</h1>}
+            <h1 className="underline decoration-pink-600">No Saved Passwords</h1>}
         </div>
     );
 }
