@@ -55,6 +55,7 @@ func serveApplication(db *database.DB) {
 
 	// User related routes
 	private_routes.POST("/user/remove", controller.DeleteAccount)
+	private_routes.POST("/user/update", controller.UpdateAccount)
 
 	log.Fatal(router.Run(":8080"))
 }
