@@ -46,7 +46,7 @@ function AddPassword({setCount}){
     }
 
     return(
-        <div className="shadow-md shadow-black flex flex-row h-fit lg:h-[21vh] p-6
+        <div className="shadow-md shadow-black flex flex-row h-fit lg:h-[21vh] p-5
                         mb-3 w-full justify-center sm:justify-normal">
             <div className="bg-[#2a254e] text-lg text-gray-300 w-fit
                         h-full flex flex-col lg:grid lg:grid-cols-[32vh,32vh,32vh,32vh,10vh] 
