@@ -189,6 +189,22 @@ func (db *DB) UpdatePassword(app_name, new_pwd string, user models.User) (int, e
 	return int(res.MatchedCount), nil
 }
 
+func (db *DB) UpdateAccount(user models.User, new_pwd string) error {
+	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
+	obj_id, err := primitive.ObjectIDFromHex(user.ID)
+	if err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	_, err = user_coll.UpdateOne(ctx, bson.M{"_id": obj_id},
+		bson.M{"$set": bson.M{"password": helpers.HashPwd(new_pwd)}})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (db *DB) DeleteAccount(user models.User) error {
 	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
 	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
