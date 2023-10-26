@@ -4,7 +4,7 @@ import { BiSolidUser } from "react-icons/bi";
 import { IoCopySharp } from "react-icons/io5";
 import { useState } from "react";
 
-function PwdContainer({props}){
+function PwdContainer({props,setCount}){
     const [ key,setKey ] = useState("");
     const [ new_pwd,setNewPwd ] = useState("");
     const [ pwdData,setPwdData ] = useState({});
@@ -60,8 +60,7 @@ function PwdContainer({props}){
             }
             const response = await fetch(del_url,req)
             if(response.status === 404){
-                alert("Password deleted");
-                window.location.reload();
+                setCount((count)=>count-1)
             }
         }catch(error){
             alert(error);
