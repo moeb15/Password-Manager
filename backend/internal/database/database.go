@@ -189,6 +189,17 @@ func (db *DB) UpdatePassword(app_name, new_pwd string, user models.User) (int, e
 	return int(res.MatchedCount), nil
 }
 
+func (db *DB) NumPasswwords(user models.User) (int64, error) {
+	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
+	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	defer cancel()
+	count, err := pwd_coll.CountDocuments(ctx, bson.M{"userid": user.ID})
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
 func (db *DB) UpdateAccount(user models.User, new_pwd string) error {
 	user_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("users")
 	obj_id, err := primitive.ObjectIDFromHex(user.ID)
