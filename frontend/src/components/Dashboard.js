@@ -23,12 +23,17 @@ function Dashboard(){
     }
 
     const handleDashboard = e => {
-        setMenu(false);
         e.preventDefault();
-        navigate("/home");
-        window.location.reload();
+        setMenu(false);
+        showPrfl(false);
+        
     }
 
+    const handleProfile = e => {
+        e.preventDefault();
+        setMenu(false);
+        showPrfl(true);
+    }
 
     return(
         <div className="w-full h-screen text-3xl text-gray-300 flex flex-row">
@@ -46,7 +51,8 @@ function Dashboard(){
                     onClick={handleDashboard}>
                     Dashboard
                 </li>
-                <li className="py-6 text-4xl cursor-pointer hover:text-black duration-100">
+                <li className="py-6 text-4xl cursor-pointer hover:text-black duration-100"
+                    onClick={handleProfile}>
                     Profile
                 </li>
                 <li className="py-6 text-4xl cursor-pointer hover:text-black duration-100"
