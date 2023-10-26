@@ -11,8 +11,7 @@ function Sidebar({prfl,setPrfl}){
         {title:"Dashboard", icon:<MdSpaceDashboard className="mr-1"/>,
                             clickFn: e => {
                                 e.preventDefault();
-                                navigate("/home");
-                                window.location.reload();
+                                setPrfl(false);
                             }},
         {title:"Profile", icon:<FaUserAlt className="mr-1"/>, 
                           clickFn: e => setPrfl(!prfl)},
