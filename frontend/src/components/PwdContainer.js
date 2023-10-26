@@ -104,7 +104,7 @@ function PwdContainer({props,setCount}){
                         h-fit flex flex-col md:flex-row items-center p-3
                         rounded-md mt-3 justify-center">
             <div className="flex flex-col items-center w-fit
-                            lg:grid lg:grid-cols-[34vh,30vh,40vh,60vh]">
+                            lg:grid lg:grid-cols-[34vh,30vh,40vh,65vh]">
                 <div className="flex flex-row">
                     <AiFillAppstore size={25} className="mx-3"/>
                     <h3>{props.application}</h3>

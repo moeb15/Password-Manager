@@ -76,9 +76,9 @@ function Profile(){
 
     return(
         <div className="w-screen h-screen flex flex-col mt-5 sm:mt-3 ">
-            <div className="w-full h-[30vh] sm:h-[21vh] flex flex-col shadow-md shadow-black p-5">
+            <div className="w-full h-[30vh] sm:h-[25vh] flex flex-col shadow-md shadow-black p-5">
                 <h2 className="underline decoration-pink-600 my-2">Delete Account</h2>
-                <div className="bg-[#2a254e] w-full sm:w-fit h-full flex flex-col rounded-md
+                <div className="bg-[#2a254e] w-full sm:w-fit h-[10vh] flex flex-col rounded-md
                                 sm:grid sm:grid-cols-[50vh,50vh,10vh] items-center justify-center">
 
                     <div className="flex rounded-md items-center bg-slate-700 
@@ -106,7 +106,7 @@ function Profile(){
                                   onClick={handleDel}/>
                 </div>
             </div>
-            <div className="w-full h-[30vh] sm:h-[21vh] flex flex-col shadow-md shadow-black p-5">
+            <div className="w-full h-[30vh] sm:h-[25vh] flex flex-col shadow-md shadow-black p-5">
                 <h2 className="underline decoration-pink-600 my-2">Change Password</h2>
                 <div className="bg-[#2a254e] w-full sm:w-fit h-full flex flex-col rounded-md
                                 sm:grid sm:grid-cols-[50vh,50vh,10vh] items-center justify-center">

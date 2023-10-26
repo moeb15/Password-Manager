@@ -38,7 +38,7 @@ function Register(){
     return(
         <div className="w-full h-screen text-center items-center
                         text-gray-300 flex flex-col justify-center">
-            <form className="flex flex-col w-[35vh] text-lg"
+            <form className="flex flex-col w-[45vh] text-lg"
                   onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label>
                 <input type="text"
