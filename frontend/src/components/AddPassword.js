@@ -3,7 +3,7 @@ import { BsFillKeyFill } from "react-icons/bs";
 import { useState } from "react";
 import { BiSolidUser } from "react-icons/bi";
 
-function AddPassword(){
+function AddPassword({setCount}){
     const [ app,setApp ] = useState("");
     const [ user,setUser ] = useState("");
     const [ pwd,setPwd ] = useState("");
@@ -30,12 +30,11 @@ function AddPassword(){
 
             const response = await fetch(add_url,req)
             if(response.status === 201){
-                alert("Password saved")
                 const json = await response.json()
                 if(json.updated_token !== ""){
                     localStorage.setItem("access_token",json.updated_token)
                 }
-                window.location.reload();
+                setCount((count)=>count+1);
             }
         }catch (error){
             alert(error);
