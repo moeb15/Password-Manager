@@ -9,6 +9,8 @@ import Profile from "./Profile";
 function Dashboard(){
     const [ menu,setMenu ] = useState(false);
     const [ prfl,showPrfl ] = useState(false);
+    const [ count,setCount ] = useState(0);
+
     const handleClick = () => setMenu(!menu)
     const navigate = useNavigate();
 
@@ -54,8 +56,8 @@ function Dashboard(){
             </ul>
             {!prfl ?   
             <div className="w-screen h-screen items-center justify-center flex flex-col">
-                <AddPassword/>
-                <Passwords />
+                <AddPassword count={count} setCount={setCount}/>
+                <Passwords count={count} setCount={setCount}/>
             </div>
             :
             <Profile />}
