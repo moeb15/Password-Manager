@@ -35,3 +35,17 @@ func DeletionEmail(user models.User) error {
 	err := dialer.DialAndSend(msg)
 	return err
 }
+
+func AccountUpdated(user models.User) error {
+	msg := gomail.NewMessage()
+	msg.SetHeader("From", os.Getenv("OWNER_EMAIL"))
+	msg.SetHeader("To", user.Email)
+	msg.SetHeader("Subject", "Password Updated")
+	msg.SetBody("text/html", fmt.Sprintf("Account password update successful <b>%s</b>", user.Username))
+
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, os.Getenv("OWNER_EMAIL"),
+		os.Getenv("OWNER_PWD"))
+
+	err := dialer.DialAndSend(msg)
+	return err
+}
