@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const MAX_PWD = 3
+const MAX_PWD = 50
 
 func AddPassword(c *gin.Context) {
 	db := c.MustGet("db_conn").(*database.DB)
