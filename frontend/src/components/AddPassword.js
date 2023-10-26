@@ -36,6 +36,10 @@ function AddPassword({setCount}){
                 }
                 setCount((count)=>count+1);
             }
+            if(response.status === 409){
+                const json = await response.json()
+                alert(json.error)
+            }
         }catch (error){
             alert(error);
         }
