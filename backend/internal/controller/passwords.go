@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"pwdmanager_api/internal/auth"
@@ -10,6 +11,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+const MAX_PWD = 3
 
 func AddPassword(c *gin.Context) {
 	db := c.MustGet("db_conn").(*database.DB)
@@ -25,6 +28,15 @@ func AddPassword(c *gin.Context) {
 	}
 	if ok := helpers.CompareHashes(pwd.Key, user.MasterKey); !ok {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid key"})
+		return
+	}
+	count, err := db.NumPasswwords(user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if count >= MAX_PWD {
+		c.JSON(http.StatusConflict, gin.H{"error": fmt.Sprintf("password limit of %d reached", MAX_PWD)})
 		return
 	}
 
