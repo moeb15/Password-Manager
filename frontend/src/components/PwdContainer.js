@@ -32,7 +32,9 @@ function PwdContainer({props,setCount}){
             const response = await fetch(fetchpwd_url,req)
             if(response.status === 302){
                 const json = await response.json()
-                setPwdData(json.data)
+                if(json.data !== null){
+                    setPwdData(json.data)
+                }
                 if (json.updated_token !== ""){
                     localStorage.setItem("access_token",json.updated_token)
                 }
