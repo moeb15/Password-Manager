@@ -111,7 +111,7 @@ func GetPassword(c *gin.Context) {
 		return
 	}
 
-	pwd := db.RetrieveByApp(pwd_req.Application, user.ID)
+	pwd := db.RetrieveByApp(pwd_req.Application, pwd_req.Username, user.ID)
 	raw_pwd, err := helpers.DecryptAES([]byte(pwd_req.Key), pwd.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
