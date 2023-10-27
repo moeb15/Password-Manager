@@ -140,6 +140,7 @@ func (db *DB) FindPasswords(user_id string) ([]*models.Password, error) {
 		if err != nil {
 			return []*models.Password{}, err
 		}
+		pwd.Password = ""
 		pwds = append(pwds, &pwd)
 	}
 
@@ -159,12 +160,13 @@ func (db *DB) DeleteByApp(app_name, user_id string) (int, error) {
 	return int(res.DeletedCount), nil
 }
 
-func (db *DB) RetrieveByApp(app_name, user_id string) models.Password {
+func (db *DB) RetrieveByApp(app_name, username, user_id string) models.Password {
 	pwd_coll := db.client.Database(os.Getenv("DB_NAME")).Collection("passwords")
 	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
 	defer cancel()
 	res := pwd_coll.FindOne(ctx, bson.D{
 		{Key: "application", Value: app_name},
+		{Key: "username", Value: username},
 		{Key: "userid", Value: user_id}})
 	var pwd models.Password
 	res.Decode(&pwd)
